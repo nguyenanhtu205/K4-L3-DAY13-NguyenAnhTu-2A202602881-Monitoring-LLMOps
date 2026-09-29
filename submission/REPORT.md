@@ -16,14 +16,18 @@
 
 Điền đúng đường dẫn tới evidence thực tế. Có thể đổi tên hoặc dùng nhiều ảnh nếu cần.
 
+> CP0 baseline (2026-09-29): API `/health` trả `ok: true` và `tracing_enabled: true`; load test hoàn thành 10 request, tất cả HTTP 200; log validator `30/100` (61 records, 60 thiếu trường bắt buộc/enrichment, 0 correlation ID duy nhất, 0 PII leak); dashboard validator `6/6`; pytest `22 passed`; ảnh Langfuse xác nhận 10 root traces trong project `day13-k4-l3a-2A202602881`. Điểm log thấp là baseline trước CP1 và được hướng dẫn là bình thường.
+
 | Evidence | Đường dẫn |
 |---|---|
+| API health CP0 | `evidence/00-health.png` |
+| Load test CP0 | `evidence/00-load-test.png` |
 | Pytest cuối | `evidence/01-pytest.png` |
 | Log validator | `evidence/02-log-validator.png` |
 | Dashboard validator | `evidence/03-dashboard-validator.png` |
 | Structured log | `evidence/04-structured-log.png` |
 | PII redaction | `evidence/05-pii-redaction.png` |
-| Trace list | `evidence/06-trace-list.png` |
+| Trace list CP0 | `evidence/06-trace-list.png` |
 | Trace waterfall | `evidence/07-trace-waterfall.png` |
 | Trace metadata | `evidence/08-trace-metadata.png` |
 | Prompt versions | `evidence/09-prompt-versions.png` |
@@ -37,11 +41,11 @@
 
 | Nội dung | Baseline | Kết quả cuối | Nhận xét |
 |---|---|---|---|
-| `validate_logs.py` | | | |
-| `validate_dashboard.py` | | | |
-| `pytest` | | | |
-| Số traces hợp lệ | | | |
-| Số PII leak | | | |
+| `validate_logs.py` | 30/100; 61 records, 60 thiếu required fields/enrichment, 0 unique correlation IDs | | Baseline trước CP1; PII scrubber pass |
+| `validate_dashboard.py` | 6/6 panel hợp lệ | | Baseline |
+| `pytest` | 22 passed | | Baseline |
+| Số traces hợp lệ | 10 root traces hiển thị trong project cá nhân | | Ảnh trace list xác nhận; chưa xác minh span tree ở CP0 |
+| Số PII leak | 0 phát hiện trong 21 records | | Kết quả baseline validator |
 | Latency P95 / TTFT P95 | | | |
 | Retrieval success rate | | | |
 
