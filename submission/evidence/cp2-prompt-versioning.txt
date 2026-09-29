@@ -1,0 +1,5 @@
+stage,trace_id,correlation_id,prompt_name,prompt_label,prompt_version,model,tokens_in,tokens_out,cost_usd
+baseline,41225bd14f7ac91f2fc611e18c290023,req-1e3f2b57,day13-chat,baseline,1,claude-sonnet-4-5,35,81,0.00132
+candidate,8605981930a7213c874ecd8c3790f9c7,req-78a1720e,day13-chat,candidate,2,claude-sonnet-4-5,52,127,0.002061
+production-promoted,06dcbc7b5317bd7f93867015bc59a4f7,req-fba51fb2,day13-chat,production,2,claude-sonnet-4-5,52,147,0.002361
+production-rollback,c4a25d18217477ad7d4ab3e927605c1c,req-c51b186e,day13-chat,production,1,claude-sonnet-4-5,35,127,0.00201

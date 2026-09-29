@@ -30,6 +30,20 @@ Nếu Langfuse không khả dụng, app dùng template local và trace metadata 
 5. Chuyển label `production` sang version 2, chạy lại một request.
 6. Rollback `production` về version 1 và lưu ảnh evidence.
 
+Repo có lệnh hỗ trợ dùng credentials trong `.env` mà không in key:
+
+```powershell
+python scripts/prompt_versions.py bootstrap
+python scripts/prompt_trace.py --label baseline
+python scripts/prompt_trace.py --label candidate
+python scripts/prompt_versions.py promote-v2
+python scripts/prompt_trace.py --label production
+python scripts/prompt_versions.py rollback-v1
+python scripts/prompt_trace.py --label production
+```
+
+`bootstrap` chỉ tạo versions khi chưa tìm thấy prompt production; các lệnh promote/rollback cập nhật label và in trạng thái/trace IDs để đối chiếu.
+
 Không chấm prompt nào “hay hơn”. Điểm nằm ở khả năng truy xuất version, đổi label và rollback có bằng chứng.
 
 ## Evidence

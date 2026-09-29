@@ -7,7 +7,12 @@ primary_slo:
     total_event: 'event == "request_received"'
   target_percent: 99.5
   error_budget_percent: 0.5
-  note: Học viên phải giải thích hoặc điều chỉnh ngưỡng bằng baseline của mình.
+  note: >-
+    99.5% request trong cửa sổ 28 ngày phải trả response thành công trong tối đa
+    3000 ms. Error budget là 0.5% tổng request (50 request không đạt trên mỗi
+    10000 request). Baseline CP1 ghi nhận latency ứng dụng quanh 2.2 giây và
+    không có request lỗi; cần theo dõi lại trên workload đủ dài trước khi coi
+    đây là mức vận hành ổn định.
 guardrails:
   error_rate_pct_max: 2
   daily_cost_usd_max: 2.5
