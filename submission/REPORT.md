@@ -22,11 +22,11 @@
 |---|---|
 | API health CP0 | `evidence/00-health.png` |
 | Load test CP0 | `evidence/00-load-test.png` |
-| Pytest cuối | `evidence/01-pytest.png` |
-| Log validator | `evidence/02-log-validator.png` |
+| Pytest CP0 / CP1 | `evidence/01-pytest.png`; `evidence/01-pytest-cp1.txt` |
+| Log validator CP0 / CP1 | `evidence/02-log-validator.png`; `evidence/02-log-validator-cp1.txt` |
 | Dashboard validator | `evidence/03-dashboard-validator.png` |
-| Structured log | `evidence/04-structured-log.png` |
-| PII redaction | `evidence/05-pii-redaction.png` |
+| Structured log CP1 | `evidence/04-structured-log.txt` |
+| PII redaction CP1 | `evidence/05-pii-redaction.txt` |
 | Trace list CP0 | `evidence/06-trace-list.png` |
 | Trace waterfall | `evidence/07-trace-waterfall.png` |
 | Trace metadata | `evidence/08-trace-metadata.png` |
@@ -51,10 +51,10 @@
 
 ## 4. Logging và PII
 
-- **Cách tạo/nhận và truyền correlation ID:**
-- **Các metadata được ghi vào structured log:**
-- **Cách bảo đảm PII được scrub trước khi ghi:**
-- **Cách kiểm chứng kết quả:**
+- **Cách tạo/nhận và truyền correlation ID:** Middleware xóa context cũ mỗi request; nhận `x-request-id` nếu khớp `req-<8-hex>`, nếu không thì sinh ID mới; bind vào structlog và trả lại qua `x-request-id` cùng `x-response-time-ms`.
+- **Các metadata được ghi vào structured log:** `user_id_hash`, `session_id`, `feature`, `model`, `env` và `correlation_id` được bind trước `request_received`.
+- **Cách bảo đảm PII được scrub trước khi ghi:** `scrub_event` duyệt chuỗi ở mọi trường/nesting trước JSON renderer và file writer; mẫu được kiểm tra gồm email, điện thoại Việt Nam, CCCD và thẻ.
+- **Cách kiểm chứng kết quả:** CP0 baseline đạt 30/100; sau CP1, `validate_logs.py` đạt 100/100 trên 29 records, 14 correlation IDs, 0 thiếu trường/enrichment và 0 PII leak; `pytest` đạt 26 passed. Output và log mẫu nằm trong Evidence index.
 
 ## 5. Tracing và prompt versioning
 

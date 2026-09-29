@@ -1,0 +1,12 @@
+﻿# PII redaction runtime evidence
+Synthetic test inputs (all fake):
+email: student@example.com
+phone: 0901234567
+CCCD: 012345678901
+card: 4111-1111-1111-1111
+
+Sanitized application request log records:
+{"service":"api","payload":{"message_preview":"Contact [REDACTED_EMAIL] for details"},"event":"request_received","user_id_hash":"644c410b5059","correlation_id":"req-be791f67","feature":"qa","session_id":"cp1-email","env":"dev","model":"claude-sonnet-4-5","level":"info","ts":"2026-09-29T09:16:04.301013Z"}
+{"service":"api","payload":{"message_preview":"Call [REDACTED_PHONE_VN] for details"},"event":"request_received","user_id_hash":"644c410b5059","correlation_id":"req-e57fc0af","feature":"qa","session_id":"cp1-phone","env":"dev","model":"claude-sonnet-4-5","level":"info","ts":"2026-09-29T09:16:06.665185Z"}
+{"service":"api","payload":{"message_preview":"CCCD [REDACTED_CCCD]"},"event":"request_received","user_id_hash":"644c410b5059","correlation_id":"req-8b28bd85","feature":"qa","session_id":"cp1-cccd","env":"dev","model":"claude-sonnet-4-5","level":"info","ts":"2026-09-29T09:16:08.857325Z"}
+{"service":"api","payload":{"message_preview":"Card [REDACTED_CREDIT_CARD]"},"event":"request_received","user_id_hash":"644c410b5059","correlation_id":"req-223b5ff0","feature":"qa","session_id":"cp1-card","env":"dev","model":"claude-sonnet-4-5","level":"info","ts":"2026-09-29T09:16:11.056046Z"}
