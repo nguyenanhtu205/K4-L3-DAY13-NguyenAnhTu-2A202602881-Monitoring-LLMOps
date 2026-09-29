@@ -1,0 +1,10 @@
+(.venv) PS> python scripts/inject_incident.py
+200 {'ok': True, 'incidents': {'rag_slow': True, 'tool_fail': False, 'cost_spike': False}}
+
+(.venv) PS> python scripts/load_test.py --challenge --concurrency 5
+Challenge: day13-k4-l3a-monitoring-llmops-v1 | Cohort: K4
+[200] req-b5ce330e | monitoring | 12083.5ms
+[200] req-9b87ed5f | monitoring | 14741.0ms
+[200] req-82c9726e | monitoring | 14742.6ms
+[200] req-335a4bbd | monitoring | 14741.1ms
+[200] req-dfd9f465 | monitoring | 14741.9ms
