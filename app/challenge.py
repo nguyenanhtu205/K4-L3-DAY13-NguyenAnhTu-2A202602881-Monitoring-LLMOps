@@ -10,6 +10,8 @@ from .incidents import STATE
 
 
 REQUIRED_QUERY_FIELDS = {"user_id", "session_id", "feature", "message"}
+EXPECTED_COHORT = "K4"
+EXPECTED_CHALLENGE_ID = "day13-k4-l3a-monitoring-llmops-v1"
 
 
 @dataclass(frozen=True)
@@ -47,8 +49,15 @@ def load_challenge(path: str | Path = "config/challenge.json") -> ChallengeConfi
         raise ValueError("challenge.json phải chứa một JSON object")
 
     cohort = _require_text(payload, "cohort")
-    if cohort not in {"K3", "K4"}:
-        raise ValueError("cohort phải là K3 hoặc K4")
+    if cohort != EXPECTED_COHORT:
+        raise ValueError(f"challenge không dành cho cohort {EXPECTED_COHORT}: {cohort}")
+
+    challenge_id = _require_text(payload, "challenge_id")
+    if challenge_id != EXPECTED_CHALLENGE_ID:
+        raise ValueError(
+            f"challenge_id không khớp lớp K4-L3A: {challenge_id!r}; "
+            f"mong đợi {EXPECTED_CHALLENGE_ID!r}"
+        )
 
     incident = _require_text(payload, "incident")
     if incident not in STATE:
@@ -75,12 +84,16 @@ def load_challenge(path: str | Path = "config/challenge.json") -> ChallengeConfi
             raise ValueError(f"queries[{index}] phải chứa các chuỗi không rỗng")
         queries.append(normalized)
 
+    affected_feature = _require_text(payload, "affected_feature")
+    if any(query["feature"] != affected_feature for query in queries):
+        raise ValueError("mọi query phải thuộc affected_feature của challenge")
+
     return ChallengeConfig(
         cohort=cohort,
-        challenge_id=_require_text(payload, "challenge_id"),
+        challenge_id=challenge_id,
         incident=incident,
         seed=seed,
-        affected_feature=_require_text(payload, "affected_feature"),
+        affected_feature=affected_feature,
         latency_threshold_ms=latency_threshold_ms,
         queries=tuple(queries),
     )

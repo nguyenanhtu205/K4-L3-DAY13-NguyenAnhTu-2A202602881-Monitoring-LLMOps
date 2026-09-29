@@ -20,17 +20,17 @@ class ChallengeConfigTests(unittest.TestCase):
 
     def test_valid_challenge_is_loaded(self) -> None:
         payload = {
-            "cohort": "K3",
-            "challenge_id": "day13-k3",
+            "cohort": "K4",
+            "challenge_id": "day13-k4-l3a-monitoring-llmops-v1",
             "incident": "rag_slow",
             "seed": 1303,
-            "affected_feature": "refund",
+            "affected_feature": "monitoring",
             "latency_threshold_ms": 2000,
             "queries": [
                 {
-                    "user_id": "k3-01",
-                    "session_id": "challenge-k3",
-                    "feature": "refund",
+                    "user_id": "k4-01",
+                    "session_id": "challenge-k4",
+                    "feature": "monitoring",
                     "message": "What evidence explains the latency increase?",
                 }
             ],
@@ -41,14 +41,14 @@ class ChallengeConfigTests(unittest.TestCase):
             challenge_path.write_text(json.dumps(payload), encoding="utf-8")
             challenge = load_challenge(challenge_path)
 
-        self.assertEqual(challenge.cohort, "K3")
+        self.assertEqual(challenge.cohort, "K4")
         self.assertEqual(challenge.incident, "rag_slow")
-        self.assertEqual(challenge.queries[0]["feature"], "refund")
+        self.assertEqual(challenge.queries[0]["feature"], "monitoring")
 
     def test_unknown_incident_is_rejected(self) -> None:
         payload = {
             "cohort": "K4",
-            "challenge_id": "day13-k4",
+            "challenge_id": "day13-k4-l3a-monitoring-llmops-v1",
             "incident": "answer_leak",
             "seed": 1304,
             "affected_feature": "monitoring",
@@ -79,7 +79,7 @@ class ChallengeConfigTests(unittest.TestCase):
     def test_official_incident_comes_from_release_file(self) -> None:
         payload = {
             "cohort": "K4",
-            "challenge_id": "day13-k4",
+            "challenge_id": "day13-k4-l3a-monitoring-llmops-v1",
             "incident": "rag_slow",
             "seed": 1304,
             "affected_feature": "monitoring",

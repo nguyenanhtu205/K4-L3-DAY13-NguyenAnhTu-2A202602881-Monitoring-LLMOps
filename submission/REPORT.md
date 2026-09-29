@@ -80,15 +80,14 @@
 
 ## 7. Điều tra challenge
 
-- **Challenge ID:**
-- **Khoảng thời gian điều tra:**
-- **Triệu chứng từ metrics:**
-- **Log line và correlation ID liên quan:**
-- **Trace ID và span gây ảnh hưởng:**
-- **Root cause:**
-- **Fix action:**
-- **Preventive measure:**
-
+- **Challenge ID:** `day13-k4-l3a-monitoring-llmops-v1` (K4; file challenge được giữ local và `.gitignore` bỏ qua).
+- **Khoảng thời gian điều tra:** Dashboard 60 phút, `2026-09-29 10:12–11:12 UTC`; năm request challenge xảy ra `11:08:20.140–11:08:34.875 UTC`.
+- **Triệu chứng từ metrics:** Panel latency hiển thị P95 `3568 ms` và P99 `3751 ms`, vượt threshold/SLO P95 `3000 ms`. Ảnh: `evidence/12-incident-metric.png`.
+- **Log line và correlation ID liên quan:** Chọn `response_sent` cho `req-b5ce330e`, feature `monitoring`, `latency_ms=3797`, timestamp `2026-09-29T11:08:24.251658Z`; request nhận lúc `11:08:20.140571Z`. Ảnh: `evidence/13-incident-log.png`.
+- **Trace ID và span gây ảnh hưởng:** Trace `a5beb1c14fd28ac81f51f1726634d221`, metadata cùng `correlation_id=req-b5ce330e`; root duration `3.80 s`, `document-retrieval` `2.50 s`, `fake-llm-generation` `0.15 s`. Retrieval là span chi phối latency. Ảnh: `evidence/14-incident-trace.png`.
+- **Root cause:** Challenge bật `rag_slow`; retrieval giả lập chờ 2.5 giây. Trace cho thấy retrieval mất 2.50 giây, trong khi generation mất 0.15 giây, phù hợp với log latency 3.797 giây và P95 vượt ngưỡng.
+- **Fix action:** Sau khi thu thập metric, log và trace, đã tắt incident qua `scripts/inject_incident.py --disable`; API xác nhận `rag_slow=false`, `tool_fail=false`, `cost_spike=false`.
+- **Preventive measure:** Giữ SLO/alert P95 latency, theo dõi duration riêng của retrieval, đặt timeout cho retrieval và dùng circuit breaker/fallback để tránh một backend chậm kéo dài toàn request.
 ## 8. Giải thích và tự đánh giá
 
 - **Một quyết định kỹ thuật quan trọng và lý do:**
@@ -108,6 +107,7 @@
 - [ ] Repository chạy lại được theo README.
 - [ ] Không có secret, API key, PII thô hoặc evidence của người khác/lớp khác.
 - [ ] URL repo và commit SHA cuối đã được nộp trên LMS/Codelabs.
+
 
 
 
